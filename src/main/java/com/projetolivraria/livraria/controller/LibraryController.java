@@ -29,7 +29,8 @@ import com.projetolivraria.livraria.service.BookService;
 
 @Configuration
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+// @CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://livraria-front-end-admin.vercel.app")
 public class LibraryController {
 
     @Autowired

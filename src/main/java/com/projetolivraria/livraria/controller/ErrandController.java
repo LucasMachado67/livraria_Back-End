@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+// @CrossOrigin(origins = "http://localhost:4200");
+@CrossOrigin(origins = "https://livraria-front-end-admin.vercel.app")
 public class ErrandController {
     
 
