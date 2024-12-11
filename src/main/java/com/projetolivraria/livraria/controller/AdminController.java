@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Configuration
 @RestController
 
-@CrossOrigin(origins = "https://livraria-front-end-admin.vercel.app/")
+@CrossOrigin(origins = "https://livraria-front-end-admin.vercel.app")
 public class AdminController {
     
     @Autowired

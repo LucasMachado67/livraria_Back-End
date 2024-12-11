@@ -17,6 +17,7 @@ public class ErrandService {
     public Errand addNewErrand(Errand e){
         if (e.getEmail() == null || e.getEmail().isEmpty() ||
             e.getName() == null || e.getName().isEmpty() ||
+            e.getPhone() == null || e.getPhone().isEmpty() ||
             e.getMessage() == null || e.getMessage().isEmpty()) {
                 throw new IllegalArgumentException("Error: Empty values are not allowed.");
         }

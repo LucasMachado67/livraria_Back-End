@@ -20,6 +20,7 @@ public class Errand {
     private Long code;
     private String email;
     private String name;
+    private String phone;
     @Column(columnDefinition = "TEXT")
     private String message;
 }

@@ -44,20 +44,10 @@ public class LibraryController {
 
     @GetMapping("/books")
     public Iterable<Book> findAllBooks() {
-        // return bookAction.findAll();
         List<Book> books = bookAction.findAll();
         return books;
     }
-
-    // @PostMapping(value = "/newBook", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
-    // public Book saveNewBook(
-    // @RequestPart("book") Book book,
-    // @RequestPart("image") MultipartFile imageFile) throws IOException {
-    // if (!imageFile.isEmpty()) {
-    //     book.setImage(imageFile.getBytes());
-    // }
-    // return bookAction.save(book);
-    // }
+    
     @PostMapping(value = "/newBook", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<?> saveNewBook(
         @RequestPart("book") Book book, 
@@ -78,7 +68,7 @@ public class LibraryController {
     }
 
     @GetMapping("/books/{code}")
-    public Book findBookById(@PathVariable Long code){
+    public Optional<Book> findBookById(@PathVariable Long code){
         return bookAction.findByCode(code);
     }
 
@@ -104,7 +94,7 @@ public class LibraryController {
     }
 
     @GetMapping("/books/search")
-    public ResponseEntity<List<Book>> searchBooks(@RequestParam("query") String query) {
+    public ResponseEntity<List<Book>> searchBooks(@RequestParam String query) {
         List<Book> books = bookService.searchBooksByTitle(query);
         return ResponseEntity.ok(books);
     }
