@@ -16,19 +16,17 @@ import com.projetolivraria.livraria.model.user.User;
 import com.projetolivraria.livraria.repository.UserRepository;
 import com.projetolivraria.livraria.security.TokenService;
 
-import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 @RequestMapping("/auth")
-@RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
 public class AuthController {
-    private final UserRepository repository;
-    private final PasswordEncoder passwordEncoder;
-    private final TokenService tokenService;
+    private UserRepository repository;
+    private PasswordEncoder passwordEncoder;
+    private TokenService tokenService;
 
     @PostMapping("/login")    
     public ResponseEntity<ResponseDTO> login(@RequestBody LoginRequestDTO body){

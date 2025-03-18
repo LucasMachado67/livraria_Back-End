@@ -5,27 +5,25 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.projetolivraria.livraria.model.user.User;
 import com.projetolivraria.livraria.repository.UserRepository;
 
 @Configuration
 @RestController
 @CrossOrigin(origins = "https://livraria-front-end-admin.vercel.app")
+@RequestMapping("user")
 public class UserController{
     @Autowired
     private UserRepository userAction;
 
-    @GetMapping("/users")
+    @GetMapping("/all")
     public List<User> findAllUsers() {
         return userAction.findAll();
     }
 
-    @GetMapping("/users/{id}")
-    public Optional<User> findUserById(@PathVariable String id){
+    @GetMapping("/{id}")
+    public Optional<User> findUserById(@PathVariable int id){
         return userAction.findById(id);
     }
 

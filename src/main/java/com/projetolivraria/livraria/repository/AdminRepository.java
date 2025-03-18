@@ -4,9 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.projetolivraria.livraria.model.Admin;
 
-public interface AdminRepository extends JpaRepository<Admin, Long>{
+public interface AdminRepository extends JpaRepository<Admin, Integer>{
     
     Admin findAdminByName(String name);
 
-    Admin findAdminById(Long id);
+    Admin findAdminById(Integer id);
 }

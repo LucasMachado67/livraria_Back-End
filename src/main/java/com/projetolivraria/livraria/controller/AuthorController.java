@@ -1,47 +1,42 @@
 package com.projetolivraria.livraria.controller;
 
-
-
+import com.projetolivraria.livraria.model.Author;
+import com.projetolivraria.livraria.service.AuthorService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.projetolivraria.livraria.model.Admin;
-import com.projetolivraria.livraria.service.AdminService;
 import org.springframework.web.server.ResponseStatusException;
 
-@Configuration
+@RequestMapping("author")
 @RestController
-@RequestMapping("admin")
-public class AdminController {
-    
+public class AuthorController {
+
     @Autowired
-    private AdminService service;
+    private AuthorService service;
 
     @PostMapping("/new")
-    public ResponseEntity<Admin> newAdmin(@RequestBody Admin admin) {
+    public ResponseEntity<Author> newAuthor(@RequestBody Author author) {
         try{
-            return ResponseEntity.ok(service.saveNewAdmin(admin));
-        }catch (RuntimeException e){
-            System.out.println("Error while trying to create admin " + e.getMessage());
+            return ResponseEntity.ok(service.newAuthor(author));
+        }catch (RuntimeException e ){
+            System.out.println("Error while trying to create author" + e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }
 
     @GetMapping("/all")
-    public Iterable<Admin> AllAdmins(){
+    public Iterable<Author> AllAuthor(){
         try{
-            return service.allAdmins();
+            return service.findAll();
         }catch (RuntimeException e){
             throw new RuntimeException("Error while trying to fetch data" + e.getMessage());
         }
     }
 
     @GetMapping("/{id}")
-    public Admin findAdminById(@PathVariable Integer id){
+    public Author findAuthorById(@PathVariable int id){
         try {
             return service.findById(id);
         }catch (RuntimeException e){
@@ -49,25 +44,24 @@ public class AdminController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteByAdminId(@PathVariable int id){
-        try{
-            service.removeAdmin(id);
-            System.out.println(HttpStatus.NO_CONTENT);
-        }catch (RuntimeException e){
-            throw new RuntimeException("Error while trying to fetch data" + e.getMessage());
-        }
-    }
-
     @PutMapping("/{id}")
-    public Admin editAdmin(@PathVariable int id, @RequestBody Admin a) {
+    public Author editAuthor(@PathVariable int id, @RequestBody Author a){
         try{
-            return service.editAdmin(a);
+            return service.editAuthor(a);
         }catch(EntityNotFoundException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error: Data not found with ID: " + id);
         }catch(Exception e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error occurred while trying to fetch data" + e.getMessage());
         }
     }
-    
+
+    @DeleteMapping("/{id}")
+    public void deleteByAuthorId(@PathVariable int id){
+        try{
+            service.deleteAuthor(id);
+            System.out.println(HttpStatus.NO_CONTENT);
+        }catch (RuntimeException e){
+            throw new RuntimeException("Error while trying to fetch data" + e.getMessage());
+        }
+    }
 }
