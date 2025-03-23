@@ -1,6 +1,9 @@
 package com.projetolivraria.livraria.service;
 
 import com.projetolivraria.livraria.model.Author;
+import com.projetolivraria.livraria.model.Category;
+import com.projetolivraria.livraria.repository.AuthorRepository;
+import com.projetolivraria.livraria.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,21 +23,20 @@ public class BookService {
     @Autowired
     private BookRepository repository;
 
-    public Book saveNewBook(Book book, MultipartFile imageFile) throws IOException {
-        if (book.getTitle() == null || book.getTitle().trim().isEmpty()) {
-            throw new IllegalArgumentException("The title needs to be fulfilled");
-        }
+    @Autowired
+    private AuthorRepository authorRepository;
 
-        if (imageFile != null && !imageFile.isEmpty()) {
-            book.setImage(imageFile.getBytes());
-        }
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    public Book saveNewBook(Book book) throws IOException {
 
         return repository.save(book);
     }
 
     public Book findById(long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Author with id: " + id + "not found"));
+                .orElseThrow(() -> new RuntimeException("Book with id: " + id + "not found"));
     }
     
 

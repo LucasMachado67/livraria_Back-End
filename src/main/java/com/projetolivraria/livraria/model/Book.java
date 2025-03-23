@@ -22,7 +22,8 @@ public class Book {
     private String language;
     private String bookCover;
     @Lob
-    @Column(columnDefinition = "BYTEA")
+    @Column(name="image",columnDefinition = "BLOB")
+    @JoinColumn(name = "image")
     private byte[] image;
     private int quantity;
     @Column(columnDefinition = "TEXT")

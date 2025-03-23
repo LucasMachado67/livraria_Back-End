@@ -1,7 +1,9 @@
 package com.projetolivraria.livraria.controller;
 
-import java.util.Optional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.projetolivraria.livraria.model.Author;
+import com.projetolivraria.livraria.model.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -14,7 +16,6 @@ import java.io.IOException;
 import java.util.List;
 
 import com.projetolivraria.livraria.model.Book;
-import com.projetolivraria.livraria.repository.BookRepository;
 import com.projetolivraria.livraria.service.BookService;
 
 @Configuration
@@ -34,19 +35,19 @@ public class LibraryController {
             throw new RuntimeException("");
         }
     }
-    
+    // Antes as String Json eram a propria classe dos objetos
     @PostMapping(value = "/new", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<?> saveNewBook(
-        @RequestPart("book") Book book, 
+        @RequestPart("book") Book book,
         @RequestPart("image") MultipartFile imageFile) {
-
         try {
-            Book savedBook = service.saveNewBook(book, imageFile);
+            if (imageFile != null && !imageFile.isEmpty()) {
+                book.setImage(imageFile.getBytes());
+            }
+            Book savedBook = service.saveNewBook(book);
             return new ResponseEntity<>(savedBook, HttpStatus.CREATED);
-
         } catch (IllegalArgumentException | IOException e) {
-            return (ResponseEntity<?>) ResponseEntity.status(405);
-
+            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
         }
     }
 
@@ -62,7 +63,7 @@ public class LibraryController {
 
     @PutMapping(value = "/{code}", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
     public Book editBook(@PathVariable Long code, @RequestBody Book b, @RequestPart("image") MultipartFile imageFile) throws IOException {
-        return service.saveNewBook(b,imageFile);
+        return service.editBook(b);
     }
 
     @GetMapping("/search")
