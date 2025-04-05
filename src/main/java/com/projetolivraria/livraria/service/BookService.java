@@ -1,19 +1,18 @@
 package com.projetolivraria.livraria.service;
 
-import com.projetolivraria.livraria.model.Author;
+import com.projetolivraria.livraria.interfaces.BookDetailsDTO;
 import com.projetolivraria.livraria.model.Category;
 import com.projetolivraria.livraria.repository.AuthorRepository;
 import com.projetolivraria.livraria.repository.CategoryRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.projetolivraria.livraria.model.Book;
 import com.projetolivraria.livraria.repository.BookRepository;
+import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
-import java.util.Optional;
 
 
 @Service
@@ -29,14 +28,23 @@ public class BookService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Transactional
     public Book saveNewBook(Book book) throws IOException {
 
+        List<Category> persistedCategories = new ArrayList<>();
+
+        for(Category category : book.getCategories()){
+            Category existingCategory = categoryRepository.findById(category.getId())
+                    .orElseThrow(() -> new RuntimeException("Category not found with ID: " + category.getId()));
+            persistedCategories.add(existingCategory);
+        }
+
+        book.setCategories(persistedCategories);
         return repository.save(book);
     }
 
-    public Book findById(long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Book with id: " + id + "not found"));
+    public BookDetailsDTO findById(long id) {
+        return repository.findBookDetailsById(id);
     }
     
 
