@@ -1,0 +1,51 @@
+	CREATE TABLE authors (
+		ID INT PRIMARY KEY auto_increment,
+        author_name varchar(255)
+    );
+    
+    CREATE TABLE categories(
+		id INT PRIMARY KEY AUTO_INCREMENT,
+		category_name VARCHAR(255)
+    );
+    
+    CREATE TABLE admins(
+		id INT primary key auto_increment,
+        email varchar(255),
+        name varchar(255),
+        password varchar(255),
+        phone varchar(20),
+        sex varchar(10)
+    );
+    
+    CREATE TABLE books(
+		id bigint primary key auto_increment,
+        title varchar(255),
+        author_id INT,
+        foreign key (author_id) references authors(id),
+        year INT,
+        price Decimal(4,2),
+        pages INT,
+        language varchar(30),
+        image blob,
+        quantity INT,
+        description text,
+        category_id INT,
+        foreign key (category_id) references categories(id),
+        book_cover varchar(20)
+    );
+    
+    CREATE TABLE messages(
+		id INT primary key,
+        email varchar(255),
+		name varchar(200),
+        phone varchar(40),
+        message text
+    );
+    
+    CREATE TABLE users(
+		id INT primary key,
+        name varchar(255),
+        email varchar(255),
+        password varchar(255)
+    );
+    

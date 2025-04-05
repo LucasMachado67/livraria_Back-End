@@ -3,6 +3,8 @@ package com.projetolivraria.livraria.model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "books")
 @Entity
@@ -22,17 +24,21 @@ public class Book {
     private String language;
     private String bookCover;
     @Lob
-    @Column(name="image",columnDefinition = "BLOB")
+    @Column(name="image",columnDefinition = "LONGBLOB")
     @JoinColumn(name = "image")
     private byte[] image;
     private int quantity;
     @Column(columnDefinition = "TEXT")
     private String description;
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+    @ManyToMany
+    @JoinTable(
+            name = "book_category",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<Category> category = new ArrayList<>();
 
-    public Book(String title, Author author, int year, BigDecimal price, int pages, String language, String bookCover, byte[] image, int quantity, String description, Category category) {
+    public Book(String title, Author author, int year, BigDecimal price, int pages, String language, String bookCover, byte[] image, int quantity, String description, List<Category> category) {
         this.title = title;
         this.author = author;
         this.year = year;
@@ -135,11 +141,11 @@ public class Book {
         this.description = description;
     }
 
-    public Category getCategory() {
+    public List<Category> getCategories() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategories(List<Category> category) {
         this.category = category;
     }
 }

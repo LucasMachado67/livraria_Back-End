@@ -1,9 +1,8 @@
 package com.projetolivraria.livraria.controller;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.projetolivraria.livraria.model.Author;
-import com.projetolivraria.livraria.model.Category;
+import com.projetolivraria.livraria.interfaces.BookDetailsDTO;
+import com.projetolivraria.livraria.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -52,7 +51,7 @@ public class LibraryController {
     }
 
     @GetMapping("/{code}")
-    public Book findBookById(@PathVariable Long code){
+    public BookDetailsDTO findBookById(@PathVariable Long code){
         return service.findById(code);
     }
 
