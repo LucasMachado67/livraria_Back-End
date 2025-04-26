@@ -52,9 +52,10 @@ public class BookService {
         return repository.findAll();
     }
 
-    public Book editBook(Book book){
+    public BookDetailsDTO editBook(Book book){
         Book bookToEdit = repository.findById(book.getCode())
                 .orElseThrow(() -> new RuntimeException("Book with id: " + book.getCode() + "not found"));
+
         bookToEdit.setTitle(book.getTitle());
         bookToEdit.setAuthor(book.getAuthor());
         bookToEdit.setYear(book.getYear());
@@ -64,7 +65,11 @@ public class BookService {
         bookToEdit.setBookCover(book.getBookCover());
         bookToEdit.setImage(book.getImage());
         bookToEdit.setQuantity(book.getQuantity());
-        return repository.save(book);
+
+        List<Category> categoryOfSelectedBooks = getSelectCategoriesPerBook(book.getCode());
+        bookToEdit.setCategories(categoryOfSelectedBooks);
+        repository.save(bookToEdit);
+        return repository.findBookDetailsById(book.getCode());
     }
 
     public void deleteBook(long id) {
@@ -74,7 +79,12 @@ public class BookService {
         repository.deleteById(id);
         ResponseEntity.noContent().build();
     }
-    public List<Book> searchBooksByTitle(String query) {
-        return repository.searchByTitle(query);
+
+    public List<Category> getSelectCategoriesPerBook(long code){
+        return categoryRepository.getCategoriesOfSelectedBook(code);
     }
+    //Code for searching books by title
+//    public List<Book> searchBooksByTitle(String query) {
+//        return repository.searchByTitle(query);
+//    }
 }

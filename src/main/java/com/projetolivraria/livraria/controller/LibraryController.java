@@ -26,6 +26,9 @@ public class LibraryController {
     @Autowired
     private BookService service;
 
+    @Autowired
+    private BookRepository repository;
+
     @GetMapping("/all")
     public Iterable<Book> findAllBooks() {
         try{
@@ -61,13 +64,21 @@ public class LibraryController {
     }
 
     @PutMapping(value = "/{code}", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
-    public Book editBook(@PathVariable Long code, @RequestBody Book b, @RequestPart("image") MultipartFile imageFile) throws IOException {
-        return service.editBook(b);
+    public ResponseEntity<BookDetailsDTO> editBook(@RequestPart("book") Book b, @RequestPart("image") MultipartFile imageFile) throws IOException {
+        try {
+            if (imageFile != null && !imageFile.isEmpty()) {
+                b.setImage(imageFile.getBytes());
+            }
+            BookDetailsDTO dto = service.editBook(b);
+            return ResponseEntity.ok(dto);
+        } catch (IllegalArgumentException | IOException e) {
+            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
+        }
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<Book>> searchBooks(@RequestParam String query) {
-        List<Book> books = service.searchBooksByTitle(query);
-        return ResponseEntity.ok(books);
-    }
+//    @GetMapping("/search")
+//    public ResponseEntity<List<Book>> searchBooks(@RequestParam String query) {
+//        List<Book> books = service.searchBooksByTitle(query);
+//        return ResponseEntity.ok(books);
+//    }
 }
