@@ -11,15 +11,10 @@ import java.util.Optional;
 import com.projetolivraria.livraria.model.Book;
 
 public interface BookRepository extends JpaRepository<Book, Long>{
-    
 
-    Optional<Book> findByCode(long code);
-
-    int countByCode(long code);
-
-    // List<Book> findByTitleContainingIgnoreCase(String title);
-    @Query("SELECT b FROM Book b WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%'))")
-    List<Book> searchByTitle(@Param("query") String query);
+    //List<Book> findByTitleContainingIgnoreCase(String title);
+    //@Query("SELECT b FROM Book b WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%'))")
+    //List<Book> searchByTitle(@Param("query") String query);
 
     @Query(value = """
         SELECT

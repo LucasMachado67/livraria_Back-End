@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @RequestMapping("category")
 @RestController
 public class CategoryController {
@@ -27,7 +29,7 @@ public class CategoryController {
     }
 
     @GetMapping("/all")
-    public Iterable<Category> AllCategory() {
+    public List<Category> AllCategory() {
         try {
             return service.findAll();
         } catch (RuntimeException e) {
