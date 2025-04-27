@@ -13,14 +13,14 @@ public class AdminService {
     
     @Autowired
     private AdminRepository repository;
-
+    //Method to register a new admin
     public Admin saveNewAdmin(Admin admin){
         if(admin.getEmail().isEmpty() || admin.getName().isEmpty() || admin.getPassword().isEmpty() || admin.getPhone().isEmpty() || admin.getSex().isEmpty()){
             throw new IllegalArgumentException("Error: Empty values are not allowed.");
         }
         return repository.save(admin);
     }
-
+    //Method to get an admin based on the id
     public Admin findById(int id){
         if(id <= 0){
             throw new IllegalArgumentException("Invalid ID");
@@ -29,7 +29,7 @@ public class AdminService {
                     .orElseThrow(() -> new RuntimeException("Admin with id: " + id + "not found"));
         }
     }
-
+    //Method to get all the admins
     public List<Admin> allAdmins(){
 
         try {
@@ -45,7 +45,7 @@ public class AdminService {
             return new ArrayList<>();
         }
     }
-
+    //Method to edit all the admins
     public Admin editAdmin(Admin admin) {
         Admin adminToEdit = repository.findById(admin.getId())
                 .orElseThrow(() -> new RuntimeException("Admin with id: " + admin.getId() + "not found"));
@@ -56,7 +56,7 @@ public class AdminService {
         adminToEdit.setSex(admin.getSex());
         return repository.save(admin);
     }
-
+    //Method to delete an admin
     public void removeAdmin(int id) {
         if (id < 0) {
             throw new IllegalArgumentException("Invalid ID");

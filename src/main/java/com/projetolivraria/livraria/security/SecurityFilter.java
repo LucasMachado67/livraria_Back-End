@@ -17,6 +17,8 @@ import com.projetolivraria.livraria.repository.UserRepository;
 import java.io.IOException;
 import java.util.Collections;
 
+
+//THIS CLASS NEEDS TO BE REFACTOR TO SUPPORT THE LOGIN AND REGISTRATION
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
     @Autowired

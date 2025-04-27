@@ -20,7 +20,7 @@ public class AdminController {
     
     @Autowired
     private AdminService service;
-
+    //Method to register a new admin
     @PostMapping("/new")
     public ResponseEntity<Admin> newAdmin(@RequestBody Admin admin) {
         try{
@@ -30,7 +30,7 @@ public class AdminController {
             return ResponseEntity.badRequest().build();
         }
     }
-
+    //Method to get all the admins
     @GetMapping("/all")
     public Iterable<Admin> AllAdmins(){
         try{
@@ -39,7 +39,7 @@ public class AdminController {
             throw new RuntimeException("Error while trying to fetch data" + e.getMessage());
         }
     }
-
+    //Method to get an admin based on the id
     @GetMapping("/{id}")
     public Admin findAdminById(@PathVariable Integer id){
         try {
@@ -48,7 +48,7 @@ public class AdminController {
             throw new RuntimeException("Error while trying to fetch data" + e.getMessage());
         }
     }
-
+    //Method to delete an admin
     @DeleteMapping("/{id}")
     public void deleteByAdminId(@PathVariable int id){
         try{
@@ -58,7 +58,7 @@ public class AdminController {
             throw new RuntimeException("Error while trying to fetch data" + e.getMessage());
         }
     }
-
+    //Method to edit an admin
     @PutMapping("/{id}")
     public Admin editAdmin(@PathVariable int id, @RequestBody Admin a) {
         try{

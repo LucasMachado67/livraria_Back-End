@@ -13,6 +13,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.projetolivraria.livraria.model.user.User;
 
+//THIS CLASS NEEDS TO BE REFACTOR TO SUPPORT THE LOGIN
 @Service
 public class TokenService {
     

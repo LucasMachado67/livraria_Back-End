@@ -4,50 +4,39 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.projetolivraria.livraria.model.Errand;
-import com.projetolivraria.livraria.repository.ErrandRepository;
 import com.projetolivraria.livraria.service.ErrandService;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
+//STILL WORKING IN THIS CLASS, IT WILL BE USED FOR THE USER SEND
+//COMMENTS/SUGGESTIONS TO THE ADMIN SYSTEM SO THEY CAN IMPROVE
 @RestController
-// @CrossOrigin(origins = "http://localhost:4200");
-@CrossOrigin(origins = "https://livraria-front-end-admin.vercel.app")
+@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/errand")
 public class ErrandController {
     
 
     @Autowired
     private ErrandService service;
-
-    @Autowired
-    private ErrandRepository repository;
-
-    @PostMapping("/newErrand")
+    //Post method to register a new errand
+    @PostMapping("/new")
     public ResponseEntity<Errand> newErrand(@RequestBody Errand e) {
         return ResponseEntity.ok(service.addNewErrand(e));
     }
-
-    @GetMapping("/allErrands")
-    public Iterable<Errand> allErrands(){
-        
-        List<Errand> errands = service.allErrands();
-        return errands;
+    //Get method to get all the errands
+    @GetMapping("/all")
+    public List<Errand> allErrands(){
+        return service.allErrands();
     }
-
-    @GetMapping("/allErrands/{code}")
-    public Errand findErrandByCode(@PathVariable Long code){
-        return repository.findErrandByCode(code);
+    //Get method to get an errand based on the id
+    @GetMapping("/{code}")
+    public Errand findErrandByCode(@PathVariable long code){
+        return service.findErrandById(code);
     }
-
-    @DeleteMapping("/allErrands/{code}")
-    public void deleteErrand(@PathVariable Long code){
-        repository.deleteById(code);
+    //Method to delete Errand
+    @DeleteMapping("/{code}")
+    public void deleteErrand(@PathVariable long code){
+        service.deleteErrandById(code);
     }
 }

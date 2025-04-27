@@ -14,7 +14,7 @@ public class AuthorService {
 
     @Autowired
     private AuthorRepository repository;
-
+    //Method to register a new Author
     public Author newAuthor(Author author) {
         if (author.getAuthor().isEmpty()) {
             throw new RuntimeException("Error while trying to create new Author");
@@ -22,7 +22,7 @@ public class AuthorService {
             return repository.save(author);
         }
     }
-
+    //Method to get all the authors
     public List<Author> findAll() {
         List<Author> authors = repository.findAll();
         if (authors.isEmpty()) {
@@ -31,19 +31,19 @@ public class AuthorService {
         }
         return authors;
     }
-
+    //Method to get an author based on the id
     public Author findById(int id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Author with id: " + id + "not found"));
     }
-
+    //Method to edit author
     public Author editAuthor(Author author) {
         Author authorToEdit = repository.findById(author.getId())
                 .orElseThrow(() -> new RuntimeException("Author with id: " + author.getId() + "not found"));
         authorToEdit.setAuthor(author.getAuthor());
         return repository.save(author);
     }
-
+    //Method to delete author based on the id
     public void deleteAuthor(int id) {
         if (id < 0) {
             throw new IllegalArgumentException("Invalid ID");

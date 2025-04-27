@@ -15,7 +15,7 @@ public class AuthorController {
 
     @Autowired
     private AuthorService service;
-
+    //Post method to register a new author
     @PostMapping("/new")
     public ResponseEntity<Author> newAuthor(@RequestBody Author author) {
         try{
@@ -25,7 +25,7 @@ public class AuthorController {
             return ResponseEntity.badRequest().build();
         }
     }
-
+    //Get method to get all the authors
     @GetMapping("/all")
     public Iterable<Author> AllAuthor(){
         try{
@@ -34,7 +34,7 @@ public class AuthorController {
             throw new RuntimeException("Error while trying to fetch data" + e.getMessage());
         }
     }
-
+    //Get method to get an author based on the id
     @GetMapping("/{id}")
     public Author findAuthorById(@PathVariable int id){
         try {
@@ -43,7 +43,7 @@ public class AuthorController {
             throw new RuntimeException("Error while trying to fetch data" + e.getMessage());
         }
     }
-
+    //Put method to edit an author
     @PutMapping("/{id}")
     public Author editAuthor(@PathVariable int id, @RequestBody Author a){
         try{
@@ -54,7 +54,7 @@ public class AuthorController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error occurred while trying to fetch data" + e.getMessage());
         }
     }
-
+    //Delete method to delete an author
     @DeleteMapping("/{id}")
     public void deleteByAuthorId(@PathVariable int id){
         try{

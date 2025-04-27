@@ -11,11 +11,12 @@ import java.util.Optional;
 import com.projetolivraria.livraria.model.Book;
 
 public interface BookRepository extends JpaRepository<Book, Long>{
-
+    //NEED'S REFACTOR
     //List<Book> findByTitleContainingIgnoreCase(String title);
     //@Query("SELECT b FROM Book b WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%'))")
     //List<Book> searchByTitle(@Param("query") String query);
 
+    //Method to get all the data of one book
     @Query(value = """
         SELECT
             b.id AS bookId,

@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
-
+    //Method to get all the categories registered with the selected book
     @Query(value = """
             SELECT
                 b.id AS book_id,
