@@ -17,7 +17,7 @@ public class CategoryController {
 
     @Autowired
     private CategoryService service;
-
+    //Post method to register a new category
     @PostMapping("/new")
     public ResponseEntity<Category> newCategory(@RequestBody Category category) {
         try {
@@ -27,7 +27,7 @@ public class CategoryController {
             return ResponseEntity.badRequest().build();
         }
     }
-
+    //Get method to get all the categories
     @GetMapping("/all")
     public List<Category> AllCategory() {
         try {
@@ -36,7 +36,7 @@ public class CategoryController {
             throw new RuntimeException("Error while trying to fetch data" + e.getMessage());
         }
     }
-
+    //Get method to get a category selected by the id
     @GetMapping("/{id}")
     public Category findCategoryById(@PathVariable int id) {
         try {
@@ -45,7 +45,7 @@ public class CategoryController {
             throw new RuntimeException("Error while trying to fetch data" + e.getMessage());
         }
     }
-
+    //Put method to edit category
     @PutMapping("/{id}")
     public ResponseEntity<Category> editCategory(@PathVariable int id, @RequestBody Category c) {
         try {
@@ -56,7 +56,7 @@ public class CategoryController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error occurred while trying to fetch data: " + e.getMessage());
         }
     }
-
+    //Delete method to delete a category based on the id
     @DeleteMapping("/{id}")
     public void deleteByCategoryId(@PathVariable int id) {
         try {

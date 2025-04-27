@@ -2,7 +2,6 @@ package com.projetolivraria.livraria.controller;
 
 
 import com.projetolivraria.livraria.interfaces.BookDetailsDTO;
-import com.projetolivraria.livraria.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 import com.projetolivraria.livraria.model.Book;
 import com.projetolivraria.livraria.service.BookService;
@@ -26,9 +24,7 @@ public class LibraryController {
     @Autowired
     private BookService service;
 
-    @Autowired
-    private BookRepository repository;
-
+    //Get method to get all the books
     @GetMapping("/all")
     public Iterable<Book> findAllBooks() {
         try{
@@ -37,7 +33,8 @@ public class LibraryController {
             throw new RuntimeException("");
         }
     }
-    // Antes as String Json eram a propria classe dos objetos
+    //MediaType.APPLICATION_JSON_VALUE sends the data as Json Values
+    //MediaType.MULTIPART_FORM_DATA_VALUE sends archives as multiple parts to upload the image
     @PostMapping(value = "/new", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<?> saveNewBook(
         @RequestPart("book") Book book,
@@ -52,17 +49,17 @@ public class LibraryController {
             return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
         }
     }
-
+    //Get Method to get books based on the id
     @GetMapping("/{code}")
     public BookDetailsDTO findBookById(@PathVariable Long code){
         return service.findById(code);
     }
-
+    //Delete method to delete books
     @DeleteMapping("/{code}")
     public void deleteByBookCode(@PathVariable Long code){
         service.deleteBook(code);
     }
-
+    //Put method to edit book (NEED's REFACTOR)
     @PutMapping(value = "/{code}", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<BookDetailsDTO> editBook(@RequestPart("book") Book b, @RequestPart("image") MultipartFile imageFile) throws IOException {
         try {
@@ -75,7 +72,7 @@ public class LibraryController {
             return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
         }
     }
-
+    //Method to search for books (NEED's REFACTOR)
 //    @GetMapping("/search")
 //    public ResponseEntity<List<Book>> searchBooks(@RequestParam String query) {
 //        List<Book> books = service.searchBooksByTitle(query);

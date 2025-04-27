@@ -19,7 +19,7 @@ import com.projetolivraria.livraria.security.TokenService;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
-
+//NEEDS TO BE REFACTOR TO SUPPORT THIS PART OF THE SYSTEM
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = "http://localhost:4200")

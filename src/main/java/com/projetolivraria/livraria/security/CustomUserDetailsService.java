@@ -11,7 +11,7 @@ import com.projetolivraria.livraria.model.user.User;
 import com.projetolivraria.livraria.repository.UserRepository;
 
 import java.util.ArrayList;
-
+//THIS CLASS NEEDS TO BE REFACTOR TO SUPPORT THE LOGIN
 @Component
 public class CustomUserDetailsService implements UserDetailsService {
     @Autowired

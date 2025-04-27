@@ -27,7 +27,15 @@ public class Errand {
         this.message = message;
     }
 
-    public Errand() {
+    public Errand(){
+        
+    }
+    public Long getCode() {
+        return code;
+    }
+
+    public void setCode(Long code) {
+        this.code = code;
     }
 
     public String getEmail() {
