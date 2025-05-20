@@ -50,5 +50,6 @@ public class CategoryService {
         }
         repository.deleteById(id);
         System.out.println("Category deleted");
+        
     }
 }

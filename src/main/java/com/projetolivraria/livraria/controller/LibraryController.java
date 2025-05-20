@@ -1,9 +1,10 @@
 package com.projetolivraria.livraria.controller;
 
-
 import com.projetolivraria.livraria.interfaces.BookDetailsDTO;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.projetolivraria.livraria.model.Book;
 import com.projetolivraria.livraria.service.BookService;
@@ -59,23 +61,32 @@ public class LibraryController {
     public void deleteByBookCode(@PathVariable Long code){
         service.deleteBook(code);
     }
-    //Put method to edit book (NEED's REFACTOR)
+
+    //Put method to edit book
     @PutMapping(value = "/{code}", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<BookDetailsDTO> editBook(@RequestPart("book") Book b, @RequestPart("image") MultipartFile imageFile) throws IOException {
+    public ResponseEntity<Book> editBook(@RequestPart("book") Book b, @RequestPart("image") MultipartFile imageFile) throws IOException {
         try {
             if (imageFile != null && !imageFile.isEmpty()) {
                 b.setImage(imageFile.getBytes());
             }
-            BookDetailsDTO dto = service.editBook(b);
+            Book dto = service.editBook(b);
             return ResponseEntity.ok(dto);
         } catch (IllegalArgumentException | IOException e) {
             return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
         }
     }
-    //Method to search for books (NEED's REFACTOR)
-//    @GetMapping("/search")
-//    public ResponseEntity<List<Book>> searchBooks(@RequestParam String query) {
-//        List<Book> books = service.searchBooksByTitle(query);
-//        return ResponseEntity.ok(books);
-//    }
+
+    //Method to search book by title
+    @GetMapping("/search")
+    public ResponseEntity<List<BookDetailsDTO>> searchBooksByTitle(@RequestParam(required = false) String query){
+        List<BookDetailsDTO> books = service.searchBookByTitle(query);
+        return ResponseEntity.ok(books);
+    }
+
+    //Method to search book by author
+    @GetMapping("/searchA")
+    public ResponseEntity<List<BookDetailsDTO>> searchByAuthor(@RequestParam(required = false) String query){
+        List<BookDetailsDTO> books = service.searchByAuthor(query);
+        return ResponseEntity.ok(books);
+    }
 }
