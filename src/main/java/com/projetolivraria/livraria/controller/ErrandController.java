@@ -13,7 +13,7 @@ import com.projetolivraria.livraria.service.ErrandService;
 //COMMENTS/SUGGESTIONS TO THE ADMIN SYSTEM SO THEY CAN IMPROVE
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/errand")
+@RequestMapping("errand")
 public class ErrandController {
     
 
