@@ -19,7 +19,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     //Method to get all the data of one book
     @Query(value = """
             SELECT
-                b.id AS bookId,
+                b.id AS code,
                 b.title,
                 b.year,
                 b.price,
@@ -51,7 +51,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     //Search Book By Title
     @Query(value = """
                 SELECT
-                		b.id AS bookId,
+                		b.id AS code,
                         b.title,
                         b.year,
                         b.price,
@@ -83,7 +83,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query(value = """
                 SELECT
-                		b.id AS bookId,
+                		b.id AS code,
                         b.title,
                         b.year,
                         b.price,

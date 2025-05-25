@@ -18,6 +18,14 @@ public class CategoryService {
         if (category.getCategory().isEmpty()) {
             throw new RuntimeException("Error while trying to create new Category");
         } else {
+
+            List<String> registeredCategories = repository.findAll().stream()
+                    .map(Category::getCategory).toList();
+            for(String c : registeredCategories){
+                if(c.equals(category.getCategory())){
+                    throw new RuntimeException(("Duplicated Category: there is already a category with this name"));
+                }
+            }
             return repository.save(category);
         }
     }

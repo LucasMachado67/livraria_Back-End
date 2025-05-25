@@ -29,4 +29,5 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
                 b.id, b.title;
             """, nativeQuery = true)
     List<Category> getCategoriesOfSelectedBook(@Param("id") long code);
+
 }

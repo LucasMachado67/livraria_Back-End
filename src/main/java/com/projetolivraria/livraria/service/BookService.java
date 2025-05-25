@@ -39,6 +39,15 @@ public class BookService {
         }
         //Setting the categories to the book
         book.setCategories(persistedCategories);
+
+        //Verification for duplicated titles
+        List<String> titles = repository.findAll().stream()
+                .map(Book::getTitle).toList();
+        for(String t : titles){
+            if(t.equals(book.getTitle())){
+                throw new RuntimeException("Duplicated Title: there is already a book with this title, you may want to alter the quantity of the book or remove the other book");
+            }
+        }
         return repository.save(book);
     }
 

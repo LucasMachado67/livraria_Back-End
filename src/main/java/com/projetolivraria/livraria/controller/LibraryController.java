@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.projetolivraria.livraria.model.Book;
@@ -44,7 +45,7 @@ public class LibraryController {
         try {
             if (imageFile != null && !imageFile.isEmpty()) {
                 book.setImage(imageFile.getBytes());
-            }
+            };
             Book savedBook = service.saveNewBook(book);
             return new ResponseEntity<>(savedBook, HttpStatus.CREATED);
         } catch (IllegalArgumentException | IOException e) {

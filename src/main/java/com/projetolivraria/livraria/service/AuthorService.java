@@ -19,6 +19,14 @@ public class AuthorService {
         if (author.getAuthor().isEmpty()) {
             throw new RuntimeException("Error while trying to create new Author");
         } else {
+            //Getting the all authors
+            List<String> registeredAuthors = repository.findAll().stream()
+                    .map(Author::getAuthor).toList();
+            for(String a : registeredAuthors){
+                if(a.equals(author.getAuthor())){
+                    throw new RuntimeException(("Duplicated author: there is already an author with this name"));
+                }
+            }
             return repository.save(author);
         }
     }
