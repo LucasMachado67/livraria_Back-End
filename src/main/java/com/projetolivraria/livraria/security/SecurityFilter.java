@@ -6,19 +6,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.projetolivraria.livraria.model.user.User;
 import com.projetolivraria.livraria.repository.UserRepository;
 
 import java.io.IOException;
-import java.util.Collections;
 
-
-//THIS CLASS NEEDS TO BE REFACTOR TO SUPPORT THE LOGIN AND REGISTRATION
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
@@ -29,13 +25,15 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = this.recoverToken(request);
-        var login = tokenService.validateToken(token);
 
-        if(login != null){
-            User user = userRepository.findByEmail(login).orElseThrow(() -> new RuntimeException("User Not Found"));
-            var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        if(token != null){
+            var email = tokenService.validateToken(token);
+            UserDetails user = userRepository.findByEmail(email);
+
+            if(user != null){
+                var authentication = new UsernamePasswordAuthenticationToken(user,null, user.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
         filterChain.doFilter(request, response);
     }

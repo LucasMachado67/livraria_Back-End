@@ -13,7 +13,6 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.projetolivraria.livraria.model.user.User;
 
-//THIS CLASS NEEDS TO BE REFACTOR TO SUPPORT THE LOGIN
 @Service
 public class TokenService {
     
@@ -24,14 +23,13 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
-            String token = JWT.create()
-                    .withIssuer("login-auth-api")
+            return JWT.create()
+                    .withIssuer("auth")
                     .withSubject(user.getEmail())
                     .withExpiresAt(this.generateExpirationDate())
                     .sign(algorithm);
-            return token;
         } catch(JWTCreationException e){
-            throw new RuntimeException("Error while authenticating");
+            throw new RuntimeException("ERROR WHILE GENERATING TOKEN", e);
         }
     }
 
@@ -39,12 +37,12 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
-                    .withIssuer("login-auth-api")
+                    .withIssuer("auth")
                     .build()
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException e) {
-            return null;
+            return "ERROR WHILE VALIDATING TOKEN" + e;
         }
 
     }

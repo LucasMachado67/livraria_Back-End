@@ -20,48 +20,24 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-
-//NEED's REFACTOR
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-//        This class needs to be fixed to support the login
+
     @Autowired
     SecurityFilter securityFilter;
-    private final CorsConfigurationSource corsConfigurationSource;
-
-    public SecurityConfig(CorsConfigurationSource corsConfigurationSource) {
-        this.corsConfigurationSource = corsConfigurationSource;
-    }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/book").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/book/new").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/newErrand").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/book/{code}").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/book/{code}").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/book/{code}").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/admin/new").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/admin/all").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/admin/{id}").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/admin/{id}").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/admin/{id}").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/allErrands/{code}").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/allErrands").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/allErrands/{code}").permitAll()
+                        .requestMatchers(HttpMethod.POST, "auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "auth/register").permitAll()
                         .anyRequest().permitAll()
-                            //anyRequest().permitAll() was not working so I put all the end points
-                )
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource));
-        return http.build();
+                ).addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
     @Bean
@@ -79,12 +55,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    PasswordEncoder passwordEncoder() {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
 }
