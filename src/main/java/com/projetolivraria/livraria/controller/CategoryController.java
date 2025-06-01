@@ -3,6 +3,7 @@ package com.projetolivraria.livraria.controller;
 import com.projetolivraria.livraria.model.Category;
 import com.projetolivraria.livraria.service.CategoryService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +20,9 @@ public class CategoryController {
     private CategoryService service;
     //Post method to register a new category
     @PostMapping("/new")
-    public ResponseEntity<Category> newCategory(@RequestBody Category category) {
+    public ResponseEntity<Category> newCategory(@RequestBody @Valid Category category) {
         try {
-            return ResponseEntity.ok(service.newCategory(category));
+            return ResponseEntity.ok(service.save(category));
         } catch (RuntimeException e) {
             System.out.println("Error while trying to create category" + e.getMessage());
             return ResponseEntity.badRequest().build();
@@ -38,7 +39,7 @@ public class CategoryController {
     }
     //Get method to get a category selected by the id
     @GetMapping("/{id}")
-    public Category findCategoryById(@PathVariable int id) {
+    public Category findCategoryById(@PathVariable @Valid int id) {
         try {
             return service.findById(id);
         } catch (RuntimeException e) {
@@ -47,7 +48,7 @@ public class CategoryController {
     }
     //Put method to edit category
     @PutMapping("/{id}")
-    public ResponseEntity<Category> editCategory(@PathVariable int id, @RequestBody Category c) {
+    public ResponseEntity<Category> editCategory(@PathVariable @Valid int id, @RequestBody @Valid Category c) {
         try {
             return ResponseEntity.ok(service.editCategory(c));
         }  catch (EntityNotFoundException e) {
@@ -58,7 +59,7 @@ public class CategoryController {
     }
     //Delete method to delete a category based on the id
     @DeleteMapping("/{id}")
-    public void deleteByCategoryId(@PathVariable int id) {
+    public void deleteByCategoryId(@PathVariable @Valid int id) {
         try {
             service.deleteCategory(id);
             System.out.println(HttpStatus.NO_CONTENT);
