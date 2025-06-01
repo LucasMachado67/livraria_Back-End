@@ -1,5 +1,6 @@
 package com.projetolivraria.livraria.service;
 
+import com.projetolivraria.livraria.model.enums.UserRole;
 import com.projetolivraria.livraria.model.user.AuthenticationDTO;
 import com.projetolivraria.livraria.model.user.LoginRequestDTO;
 import com.projetolivraria.livraria.model.user.RegisterRequestDTO;
@@ -18,6 +19,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import static com.projetolivraria.livraria.model.enums.UserRole.USER;
 
 @Service
 public class UserAuthenticationService implements UserDetailsService {
@@ -45,16 +48,17 @@ public class UserAuthenticationService implements UserDetailsService {
         return ResponseEntity.ok(new LoginRequestDTO(token));
     }
 
-    public ResponseEntity<Object> register (@RequestBody RegisterRequestDTO registerDto){
+    public ResponseEntity<Object> register(@RequestBody RegisterRequestDTO registerDto){
         if (this.userRepository.findByEmail(registerDto.email()) != null ) return ResponseEntity.badRequest().build();
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerDto.password());
 
-        User newUser = new User(registerDto.name(),
-                registerDto.email(),
-                encryptedPassword,
-                registerDto.phone(),
-                registerDto.sex(),
-                registerDto.role());
+        User newUser = new User();
+        newUser.setName(registerDto.name());
+        newUser.setEmail(registerDto.email());
+        newUser.setPassword(encryptedPassword);
+        newUser.setPhone(registerDto.phone());
+        newUser.setGender(registerDto.gender());
+        newUser.setRole(UserRole.USER);
         this.userRepository.save(newUser);
         return ResponseEntity.ok().build();
     }

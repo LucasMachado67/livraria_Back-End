@@ -1,6 +1,7 @@
 package com.projetolivraria.livraria.controller;
 
 import com.projetolivraria.livraria.interfaces.BookDetailsDTO;
+import jakarta.validation.Valid;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -40,8 +41,8 @@ public class LibraryController {
     //MediaType.MULTIPART_FORM_DATA_VALUE sends archives as multiple parts to upload the image
     @PostMapping(value = "/new", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<?> saveNewBook(
-        @RequestPart("book") Book book,
-        @RequestPart("image") MultipartFile imageFile) {
+        @RequestPart("book") @Valid Book book,
+        @RequestPart("image") @Valid MultipartFile imageFile) {
         try {
             if (imageFile != null && !imageFile.isEmpty()) {
                 book.setImage(imageFile.getBytes());
@@ -54,18 +55,18 @@ public class LibraryController {
     }
     //Get Method to get books based on the id
     @GetMapping("/{code}")
-    public BookDetailsDTO findBookById(@PathVariable Long code){
+    public BookDetailsDTO findBookById(@PathVariable @Valid Long code){
         return service.findById(code);
     }
     //Delete method to delete books
     @DeleteMapping("/{code}")
-    public void deleteByBookCode(@PathVariable Long code){
+    public void deleteByBookCode(@PathVariable @Valid Long code){
         service.deleteBook(code);
     }
 
     //Put method to edit book
     @PutMapping(value = "/{code}", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<Book> editBook(@RequestPart("book") Book b, @RequestPart("image") MultipartFile imageFile) throws IOException {
+    public ResponseEntity<Book> editBook(@RequestPart("book") @Valid Book b, @RequestPart("image") MultipartFile imageFile) throws IOException {
         try {
             if (imageFile != null && !imageFile.isEmpty()) {
                 b.setImage(imageFile.getBytes());

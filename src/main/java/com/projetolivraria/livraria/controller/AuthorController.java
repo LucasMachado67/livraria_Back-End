@@ -3,6 +3,7 @@ package com.projetolivraria.livraria.controller;
 import com.projetolivraria.livraria.model.Author;
 import com.projetolivraria.livraria.service.AuthorService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class AuthorController {
     private AuthorService service;
     //Post method to register a new author
     @PostMapping("/new")
-    public ResponseEntity<Author> newAuthor(@RequestBody Author author) {
+    public ResponseEntity<Author> newAuthor(@RequestBody @Valid Author author) {
         try{
             return ResponseEntity.ok(service.newAuthor(author));
         }catch (RuntimeException e ){
@@ -36,7 +37,7 @@ public class AuthorController {
     }
     //Get method to get an author based on the id
     @GetMapping("/{id}")
-    public Author findAuthorById(@PathVariable int id){
+    public Author findAuthorById(@PathVariable @Valid int id){
         try {
             return service.findById(id);
         }catch (RuntimeException e){
@@ -45,7 +46,7 @@ public class AuthorController {
     }
     //Put method to edit an author
     @PutMapping("/{id}")
-    public Author editAuthor(@PathVariable int id, @RequestBody Author a){
+    public Author editAuthor(@PathVariable @Valid int id, @RequestBody @Valid Author a){
         try{
             return service.editAuthor(a);
         }catch(EntityNotFoundException e){
@@ -56,7 +57,7 @@ public class AuthorController {
     }
     //Delete method to delete an author
     @DeleteMapping("/{id}")
-    public void deleteByAuthorId(@PathVariable int id){
+    public void deleteByAuthorId(@PathVariable @Valid int id){
         try{
             service.deleteAuthor(id);
             System.out.println(HttpStatus.NO_CONTENT);
