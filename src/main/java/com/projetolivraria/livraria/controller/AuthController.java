@@ -1,6 +1,7 @@
 package com.projetolivraria.livraria.controller;
 
 import com.projetolivraria.livraria.model.user.AuthenticationDTO;
+import com.projetolivraria.livraria.model.user.ChangePasswordDTO;
 import com.projetolivraria.livraria.model.user.RegisterRequestDTO;
 import com.projetolivraria.livraria.service.UserAuthenticationService;
 import jakarta.validation.Valid;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
@@ -32,6 +32,15 @@ public class AuthController {
             throw new RuntimeException(e.getMessage());
         }catch (Exception e){
             throw  new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", e);
+        }
+    }
+
+    @PutMapping("/password")
+    public void changePassword(@RequestBody ChangePasswordDTO dto){
+        try{
+            this.authenticationService.changePassword(dto.getPassword(), dto.getEmail());
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 
