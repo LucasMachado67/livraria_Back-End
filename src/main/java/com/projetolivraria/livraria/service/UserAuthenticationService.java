@@ -7,6 +7,7 @@ import com.projetolivraria.livraria.model.user.RegisterRequestDTO;
 import com.projetolivraria.livraria.model.user.User;
 import com.projetolivraria.livraria.repository.UserRepository;
 import com.projetolivraria.livraria.security.TokenService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.context.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +70,26 @@ public class UserAuthenticationService implements UserDetailsService {
         newUser.setRole(UserRole.USER);
         this.userRepository.save(newUser);
         return ResponseEntity.ok().build();
+    }
+
+    @Transactional
+    public void changePassword(String password, String email){
+
+        //Searching for the given email in the database
+        System.out.println("Email: " + email);
+        User validUser = userRepository.findByEmail(email);
+
+        //Validating password
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        if (encoder.matches(password, validUser.getPassword())) {
+            throw new RuntimeException("ERROR: Same password");
+        }
+
+        if (password.length() < 5) {
+            throw new RuntimeException("ERROR: Invalid Password");
+        }
+
+        userRepository.changePassword(encoder.encode(password), validUser.getEmail());
     }
 }
