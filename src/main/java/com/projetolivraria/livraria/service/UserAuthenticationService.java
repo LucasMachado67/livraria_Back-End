@@ -1,9 +1,6 @@
 package com.projetolivraria.livraria.service;
 
-import com.projetolivraria.livraria.model.user.AuthenticationDTO;
-import com.projetolivraria.livraria.model.user.LoginRequestDTO;
-import com.projetolivraria.livraria.model.user.RegisterRequestDTO;
-import com.projetolivraria.livraria.model.user.User;
+import com.projetolivraria.livraria.model.user.*;
 import com.projetolivraria.livraria.repository.UserRepository;
 import com.projetolivraria.livraria.security.TokenService;
 import jakarta.validation.Valid;
@@ -12,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -41,8 +40,18 @@ public class UserAuthenticationService implements UserDetailsService {
 
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = authenticationManager.authenticate(usernamePassword);
-        var token = tokenService.generateToken((User) auth.getPrincipal());
-        return ResponseEntity.ok(new LoginRequestDTO(token));
+        var user = (User) auth.getPrincipal();
+        var token = tokenService.generateToken(user);
+
+        return ResponseEntity.ok(
+                new LoginResponse(
+                        token,
+                        user.getEmail(),
+                        user.getName(),
+                        user.getPhone(),
+                        user.getGender()
+                )
+        );
     }
 
     public ResponseEntity<Object> register (@RequestBody RegisterRequestDTO registerDto){
@@ -57,5 +66,15 @@ public class UserAuthenticationService implements UserDetailsService {
                 registerDto.role());
         this.userRepository.save(newUser);
         return ResponseEntity.ok().build();
+    }
+
+    public User getAuthenticatedUser(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null || !auth.isAuthenticated()) {
+            throw new RuntimeException("User not authenticated");
+        }
+
+        return (User) auth.getPrincipal();
     }
 }

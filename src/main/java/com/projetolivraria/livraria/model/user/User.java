@@ -27,19 +27,19 @@ public class User implements UserDetails {
     @NotNull
     private String phone;
     @NotNull
-    private String sex;
+    private String gender;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
     public User() {
     }
 
-    public User(String name, String email, String password, String phone, String sex, UserRole userRole){
+    public User(String name, String email, String password, String phone, String gender, UserRole userRole){
         this.name = name;
         this.email = email;
         this.password = password;
         this.phone = phone;
-        this.sex = sex;
+        this.gender = gender;
         this.userRole = userRole;
     }
     //Giving the authorities for the specified roles
@@ -83,11 +83,11 @@ public class User implements UserDetails {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-    public String getSex(){
-        return sex;
+    public String getGender(){
+        return gender;
     }
 
-    public void setSex(String sex){
-        this.sex = sex;
+    public void setGender(String gender){
+        this.gender = gender;
     }
 }
