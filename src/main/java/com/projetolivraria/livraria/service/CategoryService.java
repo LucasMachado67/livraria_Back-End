@@ -14,7 +14,7 @@ public class CategoryService {
     private CategoryRepository repository;
 
     //Method to register a new Category
-    public Category newCategory(Category category) {
+    public Category save(Category category) {
         if (category.getCategory().isEmpty()) {
             throw new RuntimeException("Error while trying to create new Category");
         } else {

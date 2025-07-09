@@ -2,6 +2,7 @@ package com.projetolivraria.livraria.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import com.projetolivraria.livraria.model.Errand;
 import com.projetolivraria.livraria.service.ErrandService;
 
-//STILL WORKING IN THIS CLASS, IT WILL BE USED FOR THE USER SEND
-//COMMENTS/SUGGESTIONS TO THE ADMIN SYSTEM SO THEY CAN IMPROVE
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("errand")
@@ -21,22 +20,22 @@ public class ErrandController {
     private ErrandService service;
     //Post method to register a new errand
     @PostMapping("/new")
-    public ResponseEntity<Errand> newErrand(@RequestBody Errand e) {
-        return ResponseEntity.ok(service.addNewErrand(e));
+    public ResponseEntity<Errand> newErrand(@RequestBody @Valid Errand e) {
+        return ResponseEntity.ok(service.save(e));
     }
     //Get method to get all the errands
     @GetMapping("/all")
     public List<Errand> allErrands(){
-        return service.allErrands();
+        return service.getAll();
     }
     //Get method to get an errand based on the id
     @GetMapping("/{code}")
-    public Errand findErrandByCode(@PathVariable long code){
-        return service.findErrandById(code);
+    public Errand findErrandByCode(@PathVariable @Valid long code){
+        return service.findById(code);
     }
     //Method to delete Errand
     @DeleteMapping("/{code}")
-    public void deleteErrand(@PathVariable long code){
+    public void deleteErrand(@PathVariable @Valid long code){
         service.deleteErrandById(code);
     }
 }

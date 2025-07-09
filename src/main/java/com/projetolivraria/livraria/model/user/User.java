@@ -1,6 +1,5 @@
 package com.projetolivraria.livraria.model.user;
 
-
 import com.projetolivraria.livraria.model.enums.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -21,6 +20,7 @@ public class User implements UserDetails {
     @NotNull
     private String name;
     @NotNull
+    @Column(nullable = false, name = "email",unique = true)
     private String email;
     @NotNull
     private String password;
@@ -46,6 +46,10 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities(){
         if(this.userRole == userRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public String getName() {
@@ -89,5 +93,10 @@ public class User implements UserDetails {
 
     public void setGender(String gender){
         this.gender = gender;
+
+    }
+
+    public void setRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 }
