@@ -56,6 +56,11 @@ public class BookService {
         return repository.findBookDetailsById(id);
     }
 
+    public Book findBookById(long id) {
+        return repository.findById(id)
+                .orElseThrow();
+    }
+
     //Method to get all the books
     public List<Book> findAll() {
         return repository.findAll();

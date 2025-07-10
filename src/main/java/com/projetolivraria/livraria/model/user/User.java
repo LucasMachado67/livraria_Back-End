@@ -1,6 +1,5 @@
 package com.projetolivraria.livraria.model.user;
 
-
 import com.projetolivraria.livraria.model.enums.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -21,31 +20,36 @@ public class User implements UserDetails {
     @NotNull
     private String name;
     @NotNull
+    @Column(nullable = false, name = "email",unique = true)
     private String email;
     @NotNull
     private String password;
     @NotNull
     private String phone;
     @NotNull
-    private String sex;
+    private String gender;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
     public User() {
     }
 
-    public User(String name, String email, String password, String phone, String sex, UserRole userRole){
+    public User(String name, String email, String password, String phone, String gender, UserRole userRole){
         this.name = name;
         this.email = email;
         this.password = password;
         this.phone = phone;
-        this.sex = sex;
+        this.gender = gender;
         this.userRole = userRole;
     }
     //Giving the authorities for the specified roles
     public Collection<? extends GrantedAuthority> getAuthorities(){
         if(this.userRole == userRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public String getName() {
@@ -83,11 +87,16 @@ public class User implements UserDetails {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-    public String getSex(){
-        return sex;
+    public String getGender(){
+        return gender;
     }
 
-    public void setSex(String sex){
-        this.sex = sex;
+    public void setGender(String gender){
+        this.gender = gender;
+
+    }
+
+    public void setRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 }
