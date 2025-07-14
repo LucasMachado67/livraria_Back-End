@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("wishlist")
-public class WIshListController {
+public class WishListController {
 
     @Autowired
     private WishListService wishListService;

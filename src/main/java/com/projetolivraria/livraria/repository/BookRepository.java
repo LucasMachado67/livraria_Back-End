@@ -72,8 +72,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
                 WHERE
                     LOWER(b.title) LIKE LOWER(CONCAT('%', :term, '%'))
                 GROUP BY
-                    b.id, b.title, b.year, b.price, b.pages, b.language, b.book_cover,
-                	b.image, b.quantity, b.description, a.id, a.author;
+                    b.id, a.id;
             """, nativeQuery = true)
     List<BookDetailsDTO> searchByTitle(@Param("term") String term);
 
@@ -104,8 +103,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
                 WHERE
                     LOWER(a.author) LIKE LOWER(CONCAT('%', :term, '%'))
                 GROUP BY
-                    b.id, b.title, b.year, b.price, b.pages, b.language, b.book_cover,
-                	b.image, b.quantity, b.description, a.id, a.author;
+                    b.id, a.id;
             """, nativeQuery = true)
     List<BookDetailsDTO> searchByAuthor(@Param("term") String term);
 }
