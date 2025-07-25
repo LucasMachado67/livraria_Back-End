@@ -19,6 +19,13 @@ public class WishList {
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
+    public WishList(){}
+
+    public WishList(User user, Book book) {
+        this.user = user;
+        this.book = book;
+    }
+
     public Long getId() {
         return id;
     }

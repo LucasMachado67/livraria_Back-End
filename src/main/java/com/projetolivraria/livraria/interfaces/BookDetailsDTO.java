@@ -4,7 +4,7 @@ package com.projetolivraria.livraria.interfaces;
 public interface BookDetailsDTO {
     Long getCode();
     String getTitle();
-    Integer getYear();
+    Integer getPublicationYear();
     Double getPrice();
     Integer getPages();
     String getLanguage();

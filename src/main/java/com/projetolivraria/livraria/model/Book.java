@@ -18,7 +18,8 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
-    private int year;
+    @Column(name = "publication_year")
+    private int publicationYear;
     private BigDecimal price;
     private int pages;
     private String language;
@@ -38,10 +39,10 @@ public class Book {
     )
     private List<Category> category = new ArrayList<>();
 
-    public Book(String title, Author author, int year, BigDecimal price, int pages, String language, String bookCover, byte[] image, int quantity, String description, List<Category> category) {
+    public Book(String title, Author author, int publicationYear, BigDecimal price, int pages, String language, String bookCover, byte[] image, int quantity, String description, List<Category> category) {
         this.title = title;
         this.author = author;
-        this.year = year;
+        this.publicationYear = publicationYear;
         this.price = price;
         this.pages = pages;
         this.language = language;
@@ -77,12 +78,12 @@ public class Book {
         this.author = author;
     }
 
-    public int getYear() {
-        return year;
+    public int getPublicationYear() {
+        return publicationYear;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setPublicationYear(int publicationYear) {
+        this.publicationYear = publicationYear;
     }
 
     public BigDecimal getPrice() {

@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.projetolivraria.livraria.model.Book;
 
@@ -50,7 +49,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
                 SELECT
                 		b.id AS code,
                         b.title,
-                        b.year,
+                        b.publication_year,
                         b.price,
                         b.pages,
                         b.language,
@@ -81,7 +80,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
                 SELECT
                 		b.id AS code,
                         b.title,
-                        b.year,
+                        b.publication_year,
                         b.price,
                         b.pages,
                         b.language,

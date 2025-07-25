@@ -2,7 +2,6 @@ package com.projetolivraria.livraria.service;
 
 import com.projetolivraria.livraria.model.user.User;
 import com.projetolivraria.livraria.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -33,9 +31,6 @@ public class UserService {
     }
 
     public void deleteById(UUID id){
-        Optional<User> user = Optional.ofNullable(this.repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id)));
-
         this.repository.deleteById(id);
     }
 

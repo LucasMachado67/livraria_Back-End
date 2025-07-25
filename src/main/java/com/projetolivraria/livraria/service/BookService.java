@@ -2,7 +2,6 @@ package com.projetolivraria.livraria.service;
 
 import com.projetolivraria.livraria.interfaces.BookDetailsDTO;
 import com.projetolivraria.livraria.model.Category;
-import com.projetolivraria.livraria.repository.AuthorRepository;
 import com.projetolivraria.livraria.repository.CategoryRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.projetolivraria.livraria.model.Book;
 import com.projetolivraria.livraria.repository.BookRepository;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
@@ -72,7 +70,7 @@ public class BookService {
                 .orElseThrow(() -> new RuntimeException("Book with id: " + book.getCode() + "not found"));
         bookToEdit.setTitle(book.getTitle());
         bookToEdit.setAuthor(book.getAuthor());
-        bookToEdit.setYear(book.getYear());
+        bookToEdit.setPublicationYear(book.getPublicationYear());
         bookToEdit.setPrice(book.getPrice());
         bookToEdit.setPages(book.getPages());
         bookToEdit.setLanguage(book.getLanguage());
