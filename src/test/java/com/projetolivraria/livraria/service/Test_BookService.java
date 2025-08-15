@@ -1,7 +1,6 @@
 package com.projetolivraria.livraria.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -36,7 +35,7 @@ public class Test_BookService {
 
     @Mock
     private CategoryRepository categoryRepository;
-    
+
     @Mock
     private BookRepository bookRepository;
 
@@ -48,7 +47,7 @@ public class Test_BookService {
 
     @BeforeEach
     void setup(){
-        //Deletando todos os livros caso exista        
+        //Deletando todos os livros caso exista
         bookRepository.deleteAll();
         //Criando authores para colocar nos livros
         Author author = new Author("Machado de Assis");
@@ -109,15 +108,14 @@ public class Test_BookService {
         when(bookRepository.findById(book1.getCode())).thenReturn(Optional.of(book1));
 
         bookService.saveNewBook(book1); // método real, sem mock
-        BookDetailsDTO foundBook = bookService.findById(book1.getCode()); // método real
+        BookDetailsDTO foundBook = bookService.findById(book1.getCode()); //método real
 
-        // Assert
+        //Assert
         assertEquals(book1.getTitle(), foundBook.getTitle());
         assertEquals(book1.getAuthor().getAuthor(), foundBook.getAuthorName());
         assertEquals(book1.getPublicationYear(), foundBook.getPublicationYear());
         assertEquals(book1.getLanguage(), foundBook.getLanguage());
         assertEquals(book1.getPrice(), foundBook.getPrice());
     }
-
 
 }

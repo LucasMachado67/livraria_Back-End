@@ -84,8 +84,8 @@ public class UserAuthenticationService implements UserDetailsService {
         }
 
         return (User) auth.getPrincipal();
-
     }
+    
     @Transactional
     public void changePassword(String password, String email){
 
